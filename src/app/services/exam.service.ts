@@ -155,17 +155,5 @@ export class ExamService {
     return of(true).pipe(delay(500));
   }
 
-  getAllExams(): Observable<{ status: string, data: examResponse[] }>{
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `${token}`);
-    
-    return this.http.get<{ status: string, data: examResponse[] }>(this.baseURL,{headers});
-  }
 
-  getTeacherExams(): Observable<{ status: string, data: examResponse[] }> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `${token}`);
-    
-    return this.http.get<{ status: string, data: examResponse[] }>(`${this.baseURL}/teacher`,{headers});
-  }
 }
