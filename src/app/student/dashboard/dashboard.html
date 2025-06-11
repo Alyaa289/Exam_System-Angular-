@@ -1,1 +1,10 @@
 <p>dashboard works!</p>
+<div class="student-exams-container">
+  <h2 class="student-exams-title">Available Exams</h2>
+  <div class="exams-list">
+    <div *ngFor="let exam of exams" class="exam-card">
+      <div class="exam-title">{{ exam.title }}</div>
+      <button (click)="goToExam(exam)" class="start-exam-btn">Start Exam</button>
+    </div>
+  </div>
+</div>
