@@ -25,6 +25,19 @@
         }
       </div>
 
+      <div class="mb-3">
+        <label for="role" class="form-label text-dark">Select Role</label>
+        <select id="role" class="form-select border-primary-subtle" formControlName="role">
+          <option value="" disabled>Select your role</option>
+          <option value="0">Admin</option>
+          <option value="1">Student</option>
+        </select>
+        @if(loginForm.controls['role'].touched && loginForm.controls['role'].hasError('required')){
+          <div class="text-danger form-text">Role selection is required</div>
+        }
+      </div>
+      
+
       <div *ngIf="loginErrorMessage" class="login-error">
         {{ loginErrorMessage }}
         <br />

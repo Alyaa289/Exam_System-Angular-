@@ -17,8 +17,7 @@ export class AuthService {
   }
 
   login(user: any): Observable<authResponse>{
-    return this.http.post<authResponse>(`${this.baseURL}/login`,user).pipe(
-      tap(res => {localStorage.setItem('token', res.token); }));
+    return this.http.post<authResponse>(`${this.baseURL}/login`,user)
   }
 
 

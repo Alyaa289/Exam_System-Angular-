@@ -13,16 +13,12 @@ export class ExamService {
   constructor(private http: HttpClient) { }
 
   getAllExams(): Observable<{ status: string, data: examResponse[] }>{
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `${token}`);
     
-    return this.http.get<{ status: string, data: examResponse[] }>(this.baseURL,{headers});
+    return this.http.get<{ status: string, data: examResponse[] }>(this.baseURL);
   }
 
   getTeacherExams(): Observable<{ status: string, data: examResponse[] }> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `${token}`);
     
-    return this.http.get<{ status: string, data: examResponse[] }>(`${this.baseURL}/teacher`,{headers});
+    return this.http.get<{ status: string, data: examResponse[] }>(`${this.baseURL}/teacher`);
   }
 }

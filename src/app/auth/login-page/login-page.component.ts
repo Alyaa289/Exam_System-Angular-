@@ -22,7 +22,7 @@ export class LoginPageComponent implements OnInit{
   loginForm= new FormGroup({
     email: new FormControl('',  [Validators.required, Validators.email]),
     password:new FormControl('',  [Validators.required]),
-
+    role: new FormControl('', [Validators.required]) 
   })
   get getEmail(){
     return this.loginForm.controls['email'];
@@ -33,8 +33,7 @@ export class LoginPageComponent implements OnInit{
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe({
-      next:(params)=>{
-        this.id= params.get('id');
+      next:(params)=>{        
         this.getEmail.setValue('');
         this.getPassword.setValue('');
       }
@@ -44,13 +43,19 @@ export class LoginPageComponent implements OnInit{
   authHandler(event: Event){
     event.preventDefault();
     if(this.loginForm.status === 'VALID'){
+      const roleId = this.loginForm.value.role
       this.authService.login(this.loginForm.value).subscribe({
         next: ()=>{
-          if(this.id==='0'){
-            this.router.navigate(['/admin/dashboard']);
-          }else{
-            this.router.navigate(['/student/dashboard']);
-          }          
+          switch (roleId) {
+            case '0':
+              this.router.navigate(['/admin/dashboard']);
+              break;
+            case '1':
+              this.router.navigate(['/student/dashboard']);
+              break;
+            default:
+              this.loginErrorMessage = 'Unknown role selected.';
+          }
         },
         error: (err) => {
           console.error('Login failed', err)
