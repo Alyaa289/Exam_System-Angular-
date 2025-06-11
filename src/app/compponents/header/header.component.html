@@ -1,0 +1,39 @@
+<nav *ngIf="!isPublicPage()" class="navbar modern-navbar navbar-expand-lg" style="min-height:48px;">
+  <div class="container">
+    <a class="navbar-brand brand-text" [routerLink]="['/home']">
+      <span class="brand-name">EXAM</span>
+      <span class="brand-tagline">Admin Panel</span>
+    </a>
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item">
+        <a class="nav-link nav-link-modern">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link nav-link-modern" [routerLink]="['/admin/exams']">Manage Exams</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link nav-link-modern">Manage Questions</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link nav-link-modern" [routerLink]="['/admin/results']">Manage Results</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<nav *ngIf="isPublicPage()" class="navbar modern-navbar navbar-expand-lg navbar-light">
+  <div class="container">
+    <a class="navbar-brand brand-text" [routerLink]="['/home']">
+      <span class="brand-name">EXAM</span>
+      <span class="brand-tagline">Portal</span>
+    </a>
+    <ul class="navbar-nav ms-auto public-nav">
+      <li class="nav-item">
+        <a class="nav-link nav-link-modern">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link nav-link-modern">Register</a>
+      </li>
+    </ul>
+  </div>
+</nav>

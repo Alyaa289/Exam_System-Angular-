@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-view-results',
+  selector: 'app-home',
   standalone: true,
   imports: [RouterModule],
-  templateUrl: './view-results.html',
-  styleUrls: ['./view-results.css']
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
-export class ViewResultsComponent {
+export class HomeComponent {
 
 }

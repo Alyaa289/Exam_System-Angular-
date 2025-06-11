@@ -1,0 +1,74 @@
+<div class="container slide-up">
+  <div class="page-header">
+    <h2>{{ isEditMode ? 'Edit Exam' : 'Create New Exam' }}</h2>
+  </div>
+
+  <div class="card">
+    <form (ngSubmit)="onSubmit()" #examForm="ngForm">
+      <div class="form-group">
+        <label for="title" class="form-label">Exam Title</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          [(ngModel)]="exam.title"
+          required
+          class="form-input"
+          placeholder="Enter exam title"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          id="description"
+          name="description"
+          [(ngModel)]="exam.description"
+          required
+          class="form-input"
+          rows="4"
+          placeholder="Enter exam description"
+        ></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="duration" class="form-label">Duration (minutes)</label>
+          <input
+            type="number"
+            id="duration"
+            name="duration"
+            [(ngModel)]="exam.duration"
+            required
+            min="1"
+            class="form-input"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="passingScore" class="form-label">Passing Score (%)</label>
+          <input
+            type="number"
+            id="passingScore"
+            name="passingScore"
+            [(ngModel)]="exam.passingScore"
+            required
+            min="0"
+            max="100"
+            class="form-input"
+          />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="button" [disabled]="!examForm.valid">
+          {{ isEditMode ? 'Update Exam' : 'Create Exam' }}
+        </button>
+        <button type="button" class="button button-outline" (click)="cancel()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
