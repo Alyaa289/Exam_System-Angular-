@@ -1,7 +1,7 @@
 <div class="container d-flex justify-content-center align-items-center min-vh-100 min-vw-100 bg-indigo-gradient">
   <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%; background-color: rgba(255, 255, 255, 0.95);">
     <div class="text-center mb-4">
-      <h2 class="fw-bold text-indigo">Log In</h2>
+      <h2 class="fw-bold text-indigo">{{id==='0' ? "Teacher Log In" :"Student Log In"}}</h2>
     </div>
     <form (submit)="authHandler($event)" [formGroup]="loginForm">
       <div class="mb-3">
@@ -24,20 +24,6 @@
           }
         }
       </div>
-
-      <div class="mb-3">
-        <label for="role" class="form-label text-dark">Select Role</label>
-        <select id="role" class="form-select border-primary-subtle" formControlName="role">
-          <option value="" disabled>Select your role</option>
-          <option value="0">Admin</option>
-          <option value="1">Student</option>
-        </select>
-        @if(loginForm.controls['role'].touched && loginForm.controls['role'].hasError('required')){
-          <div class="text-danger form-text">Role selection is required</div>
-        }
-      </div>
-      
-
       <div *ngIf="loginErrorMessage" class="login-error">
         {{ loginErrorMessage }}
         <br />

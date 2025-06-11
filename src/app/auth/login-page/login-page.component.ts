@@ -21,8 +21,7 @@ export class LoginPageComponent implements OnInit{
 
   loginForm= new FormGroup({
     email: new FormControl('',  [Validators.required, Validators.email]),
-    password:new FormControl('',  [Validators.required]),
-    role: new FormControl('', [Validators.required]) 
+    password:new FormControl('',  [Validators.required])
   })
   get getEmail(){
     return this.loginForm.controls['email'];
@@ -33,7 +32,8 @@ export class LoginPageComponent implements OnInit{
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe({
-      next:(params)=>{        
+      next:(params)=>{      
+        this.id = params.get('id');  
         this.getEmail.setValue('');
         this.getPassword.setValue('');
       }
@@ -43,10 +43,9 @@ export class LoginPageComponent implements OnInit{
   authHandler(event: Event){
     event.preventDefault();
     if(this.loginForm.status === 'VALID'){
-      const roleId = this.loginForm.value.role
       this.authService.login(this.loginForm.value).subscribe({
         next: ()=>{
-          switch (roleId) {
+          switch (this.id) {
             case '0':
               this.router.navigate(['/admin/dashboard']);
               break;
