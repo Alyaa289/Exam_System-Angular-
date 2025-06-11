@@ -1,23 +1,29 @@
-import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { ExamService } from './../../services/examService';
+import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { examResponse } from '../../models/examResponse';
 import { CommonModule } from '@angular/common';
-import { ExamService, Exam } from '../../services/exam';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule, CommonModule],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })
-export class DashboardComponent {
-  exams: Exam[] = [];
+export class DashboardComponent implements OnInit {
+  exams: examResponse[] = [];
 
-  constructor(private examService: ExamService, private router: Router) {
-    this.exams = this.examService.getExams();
-  }
+  constructor(private examService: ExamService){}
 
-  goToExam(exam: Exam) {
-    this.router.navigate(['/student/take-exam'], { queryParams: { examId: exam.id } });
+  ngOnInit():void{
+    let x= this.examService.getAllExams().subscribe({
+      next: (res)=>{
+        this.exams =res.data;
+      },
+      error:(err)=>{
+        console.log(err)
+      }
+    })
   }
 }

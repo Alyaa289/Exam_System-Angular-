@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { examResponse } from './../models/examResponse';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 import { Exam, Question } from '../models/exam.model';
@@ -152,5 +153,19 @@ export class ExamService {
     
     this.exams.splice(index, 1);
     return of(true).pipe(delay(500));
+  }
+
+  getAllExams(): Observable<{ status: string, data: examResponse[] }>{
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `${token}`);
+    
+    return this.http.get<{ status: string, data: examResponse[] }>(this.baseURL,{headers});
+  }
+
+  getTeacherExams(): Observable<{ status: string, data: examResponse[] }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `${token}`);
+    
+    return this.http.get<{ status: string, data: examResponse[] }>(`${this.baseURL}/teacher`,{headers});
   }
 }

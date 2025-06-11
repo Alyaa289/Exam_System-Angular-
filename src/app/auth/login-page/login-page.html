@@ -1,1 +1,43 @@
-<p>login-page works!</p>
+<div class="container d-flex justify-content-center align-items-center min-vh-100 min-vw-100 bg-indigo-gradient">
+  <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%; background-color: rgba(255, 255, 255, 0.95);">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold text-indigo">Log In</h2>
+    </div>
+    <form (submit)="authHandler($event)" [formGroup]="loginForm">
+      <div class="mb-3">
+        <label for="email" class="form-label text-dark">Email</label>
+        <input type="email" class="form-control border-primary-subtle" id="email" required formControlName="email">
+        @if(getEmail.touched){
+          @if(getEmail.hasError('required')){
+            <div class="text-danger form-text">Email is required</div>
+          }
+        }          
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label text-dark d-flex justify-content-between">
+          <span>Password</span>
+        </label>
+        <input type="password" class="form-control border-primary-subtle" id="password" required formControlName="password">
+        @if(getPassword.touched){
+          @if(getPassword.hasError('required')){
+            <div class="text-danger form-text">Password is required</div>
+          }
+        }
+      </div>
+
+      <div *ngIf="loginErrorMessage" class="login-error">
+        {{ loginErrorMessage }}
+        <br />
+      </div>
+
+
+      <div class="d-grid mb-3">
+        <button type="submit" class="btn btn-gradient">Sign In</button>
+      </div>
+      <p class="text-center text-muted">
+        Don't have an account?
+        <a [routerLink]="['/register']" class="text-primary fw-bold text-decoration-underline">Sign up</a>
+      </p>
+    </form>
+  </div>
+</div>

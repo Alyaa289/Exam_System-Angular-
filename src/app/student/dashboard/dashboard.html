@@ -1,10 +1,22 @@
-<p>dashboard works!</p>
-<div class="student-exams-container">
-  <h2 class="student-exams-title">Available Exams</h2>
-  <div class="exams-list">
-    <div *ngFor="let exam of exams" class="exam-card">
-      <div class="exam-title">{{ exam.title }}</div>
-      <button (click)="goToExam(exam)" class="start-exam-btn">Start Exam</button>
+<div class="container py-4">
+    <h2 class="fw-bold mb-1" style="color: #5a67d8;">Available Exams</h2>
+    <p class="text-muted mb-5">Choose an exam to get started</p>
+  
+    <div class="row g-4">
+      <div class="col-md-4 col-sm-6" *ngFor="let exam of exams">
+        <div class="exam-card">
+          <div class="exam-title">
+            <i class="fas fa-file-alt" style="color: #333;"></i> {{ exam.title }}
+          </div>
+          <div class="exam-description">{{ exam.description }}</div>
+          <div class="exam-meta">
+            <span><i class="fas fa-clock"></i> Duration: {{ exam.duration }} mins</span>
+          </div>
+          <div class="exam-footer">
+            <a [routerLink]="['/student/take-exam']" class="exam-button">Start Exam</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+  

@@ -1,49 +1,66 @@
-.student-exams-container {
-  max-width: 600px;
-  margin: 40px auto;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(124,58,237,0.10);
-  padding: 32px 24px;
-}
-.student-exams-title {
-  text-align: center;
-  margin-bottom: 32px;
-  font-size: 2rem;
-  color: #7c3aed;
-  font-weight: 700;
-}
-.exams-list {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
 .exam-card {
-  background: #f6f3ff;
-  border: 1.5px solid #e0d7fa;
-  border-radius: 10px;
-  padding: 18px 16px 12px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 2px 8px rgba(124,58,237,0.06);
-}
-.exam-title {
-  font-size: 1.1rem;
-  color: #5b21b6;
-  font-weight: 600;
-}
-.start-exam-btn {
-  background: #7c3aed;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 28px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.start-exam-btn:hover {
-  background: #5b21b6;
-}
+    background-color: #ffffff;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.4s ease;
+    border: 1px solid #f0f0f0;
+  }
+  
+  .exam-card:hover {    
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  }
+  
+  .exam-title {
+    font-weight: 700;
+    font-size: 1.4rem;    
+    color: #5a67d8;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .exam-description {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+  
+  .exam-meta {
+    font-size: 0.85rem;
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .exam-meta i {
+    margin-right: 0.5rem;
+  }
+  
+  .exam-button {
+    background-color: #5a67d8e8;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .exam-button:hover {
+    background-color: #5a63d6;
+    transform: translateY(-1px);
+    text-decoration: none;
+  }
+  
+  .exam-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+  

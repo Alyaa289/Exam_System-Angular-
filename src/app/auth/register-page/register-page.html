@@ -1,1 +1,55 @@
-<p>register-page works!</p>
+<div class="container d-flex justify-content-center align-items-center min-vh-100 min-vw-100 bg-indigo-gradient">
+    <div class="card shadow-lg p-4 border-0 " style="max-width: 400px; width: 100%; background-color: #ffffffef;">
+      <div class="text-center mb-4">
+        <h2 class="fw-bold text-gradient">Register</h2>
+      </div>
+      <form (submit)="authHandler($event)" [formGroup]="registerForm">
+        <div class="mb-3">
+          <label for="name" class="form-label text-dark">Username</label>
+          <input type="text" class="form-control border-primary-subtle" id="name" required formControlName="username">
+          @if(getUsername.touched){
+            @if(getUsername.hasError('required')){
+              <div class="text-danger form-text">Username is required</div>
+            }
+          }
+          @if(getUsername.hasError('minlength')){
+            <div class="text-danger form-text">Username must be at least 8 characters</div>
+          }
+        </div>
+  
+        <div class="mb-3">
+          <label for="email" class="form-label text-dark">Email</label>
+          <input type="email" class="form-control border-primary-subtle" id="email" required formControlName="email">
+          @if(getEmail.touched){
+            @if(getEmail.hasError('required')){
+              <div class="text-danger form-text">Email is required</div>
+            }
+          }
+        </div>
+  
+        <div class="mb-3">
+          <label for="password" class="form-label text-dark">Password</label>
+          <input type="password" class="form-control border-primary-subtle" id="password" required formControlName="password">
+          @if(getPassword.touched){
+            @if(getPassword.hasError('required')){
+              <div class="text-danger form-text">Password is required</div>
+            }
+          }
+        </div>
+  
+        <div *ngIf="registerErrorMessage" class="login-error">
+          {{ registerErrorMessage }}
+          <br />
+        </div>
+
+        <div class="d-grid mb-3">
+          <button type="submit" class="btn btn-gradient">Sign Up</button>
+        </div>
+        <p class="text-center text-dark small">
+          Already have an account?
+          <a [routerLink]="['/login']" class="text-primary fw-bold text-decoration-underline">Sign In</a>
+        </p>
+      </form>
+    </div>
+  </div>
+  
