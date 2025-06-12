@@ -2,11 +2,11 @@
   <h2 class="exam-title">Take Exam</h2>
   <form #examForm="ngForm" (ngSubmit)="submitExam()" class="exam-form">
     <div class="question-card" *ngFor="let question of questions">
-      <h3 class="question-text">Question {{ question.id }}: {{ question.text }}</h3>
+      <h3 class="question-text">{{ question.question }}</h3>
       <div class="options">
         <label *ngFor="let option of question.options" class="option-label">
-          <input type="radio" [name]="'question' + question.id" [value]="option" (change)="onAnswerChange(question.id, option)" required>
-          {{ option }}
+          <input type="radio" [name]="'question' + question._id" [value]="option" (change)="onAnswerChange(question._id, option._id)" required>
+          {{ option.text }}
         </label>
       </div>
     </div>
@@ -18,7 +18,7 @@
 <div class="score-modal-backdrop" *ngIf="showScoreModal">
   <div class="score-modal">
     <h2>Quiz Result</h2>
-    <p class="score-text">You scored <span class="score-number">{{ score }}</span> out of {{ questions.length }}</p>
+    <p class="score-text">You scored <span class="score-number">{{ score>=0 ? score : 0 }}</span> out of {{ questions.length }}</p>
     <button class="close-modal-btn" (click)="closeScoreModal()">Close</button>
   </div>
 </div>

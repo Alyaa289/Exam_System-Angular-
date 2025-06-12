@@ -1,10 +1,14 @@
+import { Option } from './../../models/exam.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { ExamService, Exam, Question } from '../../services/exam';
+import { Exam, Question } from '../../services/exam';
+import { ExamService } from '../../services/examService';
+import { examResponse } from '../../models/examResponse';
 import { Subscription } from 'rxjs';
 
+type QuestionWithAnswer = examResponse['questions'][0] & { answer?: boolean };
 @Component({
   selector: 'app-take-exam',
   standalone: true,
@@ -13,20 +17,25 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./take-exam.component.css']
 })
 export class TakeExamComponent implements OnInit, OnDestroy {
-  exam: Exam | null = null;
-  questions: (Question & { answer?: string })[] = [];
-  examId: number | null = null;
-  score: number | null = null;
+  exam: examResponse | null = null;
+  questions: QuestionWithAnswer[] = [];
+  // questions: examResponse['questions'] = [];
+  answers: boolean[]=[];
+  examId: string | null = null;
+  score: number = 0;
   showScoreModal = false;
   private sub: Subscription = new Subscription();
 
   constructor(private examService: ExamService, private route: ActivatedRoute, private router: Router) {}
 
-  ngOnInit() {
+  ngOnInit() {   
+    this.route.paramMap.subscribe({
+      next:(params)=>{
+        this.examId= params.get('id'); }
+      })
     // Listen to both queryParams and navigation events for live updates
     this.sub.add(
       this.route.queryParams.subscribe(params => {
-        this.examId = params['examId'] ? +params['examId'] : null;
         this.updateExamAndQuestions();
       })
     );
@@ -37,26 +46,39 @@ export class TakeExamComponent implements OnInit, OnDestroy {
         }
       })
     );
+    
   }
 
   updateExamAndQuestions() {
     if (this.examId) {
-      this.exam = this.examService.getExamById(this.examId) || null;
-      this.questions = this.exam ? this.exam.questions.map(q => ({ ...q, answer: '' })) : [];
+      this.examService.getExamById(this.examId).subscribe({
+        next: (res) => {
+          this.exam = res.data;          
+          this.questions = this.exam ? this.exam.questions.map(q => ({ ...q, answer: false })) : [];
+        },
+        error: (err) => {
+          console.error('Failed to fetch exam:', err);
+          this.exam = null;
+          this.questions = [];
+        }
+      });
     }
   }
 
-  onAnswerChange(questionId: number, answer: string) {
-    const question = this.questions.find(q => q.id === questionId);
-    if (question) {
-      question.answer = answer;
+  onAnswerChange(questionId: string, optionId: string) {
+    const index = this.questions.findIndex(q => q._id === questionId);
+    if (index !== -1) {
+      const option = this.questions[index].options.find(o => o._id === optionId);
+      if (option) {
+        this.questions[index].answer = option.isCorrect;
+      }
     }
   }
 
   submitExam() {
     let score = 0;
     for (const q of this.questions) {
-      if (q.answer === q.correct) {
+      if (q.answer) {
         score++;
       }
     }
@@ -66,6 +88,7 @@ export class TakeExamComponent implements OnInit, OnDestroy {
 
   closeScoreModal() {
     this.showScoreModal = false;
+    this.score = 0;
   }
 
   ngOnDestroy() {
