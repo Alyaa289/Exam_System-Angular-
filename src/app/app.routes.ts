@@ -1,5 +1,3 @@
-
-
 import { Routes } from '@angular/router';
 
 import { LoginPageComponent } from './auth/login-page/login-page.component';
@@ -47,6 +45,18 @@ export const routes: Routes = [
           import('./admin/exam-form/exam-form.component').then(
             m => m.ExamFormComponent
           )
+      },
+      {
+        path: 'questions',
+        loadComponent: () => import('./admin/questions/questions.component').then(m => m.QuestionsComponent)
+      },
+      {
+        path: 'questions/add',
+        loadComponent: () => import('./admin/questions/add-question.component').then(m => m.AddQuestionComponent)
+      },
+      {
+        path: 'questions/edit/:id',
+        loadComponent: () => import('./admin/questions/edit-question.component').then(m => m.EditQuestionComponent)
       }
     ]
   },
@@ -63,5 +73,5 @@ export const routes: Routes = [
 ];
 
 
-  
+
 

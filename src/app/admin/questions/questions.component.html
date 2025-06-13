@@ -1,0 +1,48 @@
+<div class="questions-list-container">
+  <h2>Question Management</h2>
+  <div class="form-group" style="max-width:400px; margin-bottom:2rem;">
+    <label for="examSelect">Select Exam</label>
+    <select id="examSelect" class="form-input" [(ngModel)]="selectedExamId" (change)="onExamChange()">
+      <option [ngValue]="null" disabled selected>Select an exam</option>
+      <option *ngFor="let exam of exams" [ngValue]="exam.id">{{ exam.title }}</option>
+    </select>
+  </div>
+
+  <div *ngIf="selectedExam">
+    <div class="add-btn-row">
+      <button class="button primary" (click)="addQuestion()">Add Question</button>
+    </div>
+    <table class="questions-table">
+      <thead>
+        <tr>
+          <th>Text</th>
+          <th>Type</th>
+          <th>Options</th>
+          <th style="text-align:center;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let q of selectedExam.questions">
+          <td>{{ q.text }}</td>
+          <td>{{ q.type }}</td>
+          <td>
+            <ul>
+              <li *ngFor="let opt of q.options">
+                {{ opt.text }} <span *ngIf="opt.isCorrect" class="correct">(Correct)</span>
+              </li>
+            </ul>
+          </td>
+          <td style="text-align:center;">
+            <div class="action-btn-row">
+              <button class="button edit" (click)="editQuestion(q)">Edit</button>
+              <button class="button delete" (click)="deleteQuestion(q.id)">Delete</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="!selectedExam">
+    <p class="question-form-message">Please select an exam to manage its questions.</p>
+  </div>
+</div>
