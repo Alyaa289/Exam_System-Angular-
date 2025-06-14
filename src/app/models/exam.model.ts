@@ -1,26 +1,30 @@
 export interface Exam {
-  id: string;
+  _id?: string;
+  id?: string;
   title: string;
-  description: string;
-  duration: number; 
-  passingScore: number; 
+  description?: string;
+  duration: number;
+  passingScore?: number;
   questions: Question[];
-  isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  isActive?: boolean;
+  createdBy?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface Question {
-  id: string;
-  examId: string;
-  text: string;
-  type: 'multiple-choice' | 'single-choice' | 'true-false';
+  _id?: string;
+  id?: string;
+  question: string;
+  text?: string; // For backward compatibility
+  type?: string; // For backward compatibility
+  points?: number; // For backward compatibility
   options: Option[];
-  points: number;
 }
 
 export interface Option {
-  id: string;
+  _id?: string;
+  id?: string;
   text: string;
   isCorrect: boolean;
 }

@@ -44,16 +44,25 @@ export class LoginPageComponent implements OnInit{
     event.preventDefault();
     if(this.loginForm.status === 'VALID'){
       this.authService.login(this.loginForm.value).subscribe({
-        next: ()=>{
-          switch (this.id) {
-            case '0':
+        next: (response)=>{
+          // Store the token
+          localStorage.setItem('token', response.token);
+
+          // Decode the token to get user role (simple decode for demo)
+          try {
+            const tokenPayload = JSON.parse(atob(response.token.split('.')[1]));
+            const userRole = tokenPayload.role;
+
+            if (userRole === 'admin') {
               this.router.navigate(['/admin/dashboard']);
-              break;
-            case '1':
+            } else if (userRole === 'student') {
               this.router.navigate(['/student/dashboard']);
-              break;
-            default:
-              this.loginErrorMessage = 'Unknown role selected.';
+            } else {
+              this.loginErrorMessage = 'Unknown role.';
+            }
+          } catch (error) {
+            console.error('Error decoding token:', error);
+            this.loginErrorMessage = 'Login successful but role detection failed.';
           }
         },
         error: (err) => {

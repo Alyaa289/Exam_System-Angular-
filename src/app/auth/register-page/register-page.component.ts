@@ -30,8 +30,11 @@ export class RegisterPageComponent implements OnInit{
 
   registerForm= new FormGroup({
     username: new FormControl('',  [Validators.required, Validators.minLength(8)]),
-    email: new FormControl('',  [Validators.required, Validators.email]),
-    password:new FormControl('',  [Validators.required]),
+    email: new FormControl('',  [
+      Validators.required,
+      Validators.pattern(/^[a-zA-Z]{3,8}(@)(gmail|yahoo)(.com)$/)
+    ]),
+    password:new FormControl('',  [Validators.required, Validators.minLength(6)]),
     role:new FormControl('student'),
   })
   

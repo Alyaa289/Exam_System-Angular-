@@ -1,3 +1,5 @@
+
+
 import { Routes } from '@angular/router';
 
 import { LoginPageComponent } from './auth/login-page/login-page.component';
@@ -5,6 +7,7 @@ import { RegisterPageComponent } from './auth/register-page/register-page.compon
 import { DashboardComponent } from './student/dashboard/dashboard.component';
 import { TakeExamComponent } from './student/take-exam/take-exam.component';
 import { ExamResultComponent } from './student/exam-result/exam-result.component';
+import { StudentResultsComponent } from './student/results/results.component';
 import { AdminDashboardComponent } from './admin/dashboard/dashboard.component';
 import { ExamFormComponent } from './admin/exam-form/exam-form.component';
 import { QuestionFormComponent } from './admin/question-form/question-form.component';
@@ -47,31 +50,24 @@ export const routes: Routes = [
           )
       },
       {
-        path: 'questions',
-        loadComponent: () => import('./admin/questions/questions.component').then(m => m.QuestionsComponent)
-      },
-      {
-        path: 'questions/add',
-        loadComponent: () => import('./admin/questions/add-question.component').then(m => m.AddQuestionComponent)
-      },
-      {
-        path: 'questions/edit/:id',
-        loadComponent: () => import('./admin/questions/edit-question.component').then(m => m.EditQuestionComponent)
+        path: 'question-form/:examId',
+        component: QuestionFormComponent
       }
     ]
   },
   { path: 'login/:id', component: LoginPageComponent },
+  { path: 'login', component: LoginPageComponent },
   { path: 'register', component: RegisterPageComponent },
   { path: 'student/dashboard', component: DashboardComponent },
-  { path: 'student/take-exam', component: TakeExamComponent },
+  { path: 'student/take-exam/:id', component: TakeExamComponent },
   { path: 'student/exam-result', component: ExamResultComponent },
+  { path: 'student/results', component: StudentResultsComponent },
   { path: 'admin/dashboard', component: AdminDashboardComponent },
   { path: 'admin/exam-form', component: ExamFormComponent },
   { path: 'admin/question-form', component: QuestionFormComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent }
 ];
 
 
-
+  
 

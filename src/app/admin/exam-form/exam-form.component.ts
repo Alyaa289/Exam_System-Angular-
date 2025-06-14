@@ -1,8 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
 import { ExamService } from '../../services/exam.service';
 import { LoadingService } from '../../services/loading.servise';
 import { Exam } from '../../models/exam.model';
@@ -12,10 +11,9 @@ import { Exam } from '../../models/exam.model';
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './exam-form.component.html',
-    styleUrls: ['./exam-form.component.css']
-
+  styleUrls: ['./exam-form.component.css']
 })
-export class ExamFormComponent {
+export class ExamFormComponent implements OnInit {
   exam: Partial<Exam> = {
     title: '',
     description: '',
@@ -38,8 +36,9 @@ export class ExamFormComponent {
     if (examId) {
       this.isEditMode = true;
       this.loadingService.showLoading();
+      const token = localStorage.getItem('token') || '';
 
-      this.examService.getExamById(examId).subscribe({
+      this.examService.getExamById(examId, token).subscribe({
         next: (exam) => {
           this.exam = exam;
           this.loadingService.hideLoading();
@@ -54,9 +53,11 @@ export class ExamFormComponent {
 
   onSubmit(): void {
     this.loadingService.showLoading();
+    const token = localStorage.getItem('token') || '';
 
     if (this.isEditMode) {
-      this.examService.updateExam(this.exam.id!, this.exam).subscribe({
+      const examId = this.exam._id || this.exam.id || '';
+      this.examService.updateExam(examId, this.exam, token).subscribe({
         next: () => {
           this.router.navigate(['/admin/exams']);
         },
@@ -66,9 +67,10 @@ export class ExamFormComponent {
         }
       });
     } else {
-      this.examService.createExam(this.exam as Exam).subscribe({
-        next: (exam) => {
- this.router.navigate(['/admin/exams']);        },
+      this.examService.createExam(this.exam as Exam, token).subscribe({
+        next: () => {
+          this.router.navigate(['/admin/exams']);
+        },
         error: (error) => {
           console.error('Error creating exam:', error);
           this.loadingService.hideLoading();

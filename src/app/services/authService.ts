@@ -20,15 +20,5 @@ export class AuthService {
     return this.http.post<authResponse>(`${this.baseURL}/login`,user);
   }
 
-  isLoggedIn(): boolean {
-    // Example: check for token in localStorage
-    return !!localStorage.getItem('token');
-  }
-
-  isAdmin(): boolean {
-    // Example: check for role in localStorage or a user object
-    const role = localStorage.getItem('role');
-    return role === 'admin';
-  }
 
 }

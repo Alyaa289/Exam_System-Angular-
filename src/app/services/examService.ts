@@ -12,15 +12,23 @@ export class ExamService {
 
   constructor(private http: HttpClient) { }
 
-  getAllExams(): Observable<{ status: string, data: examResponse[] }>{
-    return this.http.get<{ status: string, data: examResponse[] }>(this.baseURL);
+  getAllExams(token?: string): Observable<{ status: string, data: examResponse[] }>{
+    const headers = token ? { headers: new HttpHeaders({ Authorization: token }) } : {};
+    return this.http.get<{ status: string, data: examResponse[] }>(this.baseURL, headers);
   }
 
-  getTeacherExams(): Observable<{ status: string, data: examResponse[] }> {
-    return this.http.get<{ status: string, data: examResponse[] }>(`${this.baseURL}/teacher`);
+  getTeacherExams(token?: string): Observable<{ status: string, data: examResponse[] }> {
+    const headers = token ? { headers: new HttpHeaders({ Authorization: token }) } : {};
+    return this.http.get<{ status: string, data: examResponse[] }>(`${this.baseURL}/teacher`, headers);
   }
 
-  getExamById(id: string): Observable<{ status: string, data: examResponse }> {
-    return this.http.get<{ status: string, data: examResponse }>(`${this.baseURL}/${id}`);
-    }
+  getExamById(id: string, token?: string): Observable<{ status: string, data: examResponse }> {
+    const headers = token ? { headers: new HttpHeaders({ Authorization: token }) } : {};
+    return this.http.get<{ status: string, data: examResponse }>(`${this.baseURL}/${id}`, headers);
+  }
+
+  getAllResults(token?: string): Observable<any> {
+    const headers = token ? { headers: new HttpHeaders({ Authorization: token }) } : {};
+    return this.http.get<any>('http://localhost:3001/results', headers);
+  }
 }

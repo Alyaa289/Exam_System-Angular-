@@ -1,14 +1,10 @@
-import { Option } from './../../models/exam.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Exam, Question } from '../../services/exam';
-import { ExamService } from '../../services/examService';
-import { examResponse } from '../../models/examResponse';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
+import { ExamService } from '../../services/exam.service';
+import { Exam, Question } from '../../models/exam.model';
 import { Subscription } from 'rxjs';
-
-type QuestionWithAnswer = examResponse['questions'][0] & { answer?: boolean };
 @Component({
   selector: 'app-take-exam',
   standalone: true,
@@ -17,81 +13,100 @@ type QuestionWithAnswer = examResponse['questions'][0] & { answer?: boolean };
   styleUrls: ['./take-exam.component.css']
 })
 export class TakeExamComponent implements OnInit, OnDestroy {
-  exam: examResponse | null = null;
-  questions: QuestionWithAnswer[] = [];
-  // questions: examResponse['questions'] = [];
-  answers: boolean[]=[];
+  exam: Exam | null = null;
+  questions: Question[] = [];
+  answers: { [questionId: string]: string } = {};
   examId: string | null = null;
   score: number = 0;
+  total: number = 0;
+  percentage: number = 0;
   showScoreModal = false;
+  timeRemaining: number = 0;
+  timer: any;
   private sub: Subscription = new Subscription();
 
   constructor(private examService: ExamService, private route: ActivatedRoute, private router: Router) {}
 
-  ngOnInit() {   
+  ngOnInit() {
     this.route.paramMap.subscribe({
       next:(params)=>{
-        this.examId= params.get('id'); }
-      })
-    // Listen to both queryParams and navigation events for live updates
-    this.sub.add(
-      this.route.queryParams.subscribe(params => {
-        this.updateExamAndQuestions();
-      })
-    );
-    this.sub.add(
-      this.router.events.subscribe(event => {
-        if (event instanceof NavigationEnd) {
-          this.updateExamAndQuestions();
+        this.examId = params.get('id');
+        if (this.examId) {
+          this.loadExam();
         }
-      })
-    );
-    
+      }
+    });
   }
 
-  updateExamAndQuestions() {
-    if (this.examId) {
-      this.examService.getExamById(this.examId).subscribe({
-        next: (res) => {
-          this.exam = res.data;          
-          this.questions = this.exam ? this.exam.questions.map(q => ({ ...q, answer: false })) : [];
-        },
-        error: (err) => {
-          console.error('Failed to fetch exam:', err);
-          this.exam = null;
-          this.questions = [];
-        }
-      });
-    }
+  loadExam() {
+    if (!this.examId) return;
+
+    const token = localStorage.getItem('token') || '';
+    this.examService.takeExam(this.examId, token).subscribe({
+      next: (exam) => {
+        this.exam = exam;
+        this.questions = exam.questions || [];
+        this.timeRemaining = exam.duration * 60; // Convert minutes to seconds
+        this.startTimer();
+      },
+      error: (err) => {
+        console.error('Failed to fetch exam:', err);
+        alert('Failed to load exam. Please try again.');
+        this.router.navigate(['/student/dashboard']);
+      }
+    });
+  }
+
+  startTimer() {
+    this.timer = setInterval(() => {
+      this.timeRemaining--;
+      if (this.timeRemaining <= 0) {
+        this.submitExam();
+      }
+    }, 1000);
+  }
+
+  getTimeDisplay(): string {
+    const minutes = Math.floor(this.timeRemaining / 60);
+    const seconds = this.timeRemaining % 60;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   }
 
   onAnswerChange(questionId: string, optionId: string) {
-    const index = this.questions.findIndex(q => q._id === questionId);
-    if (index !== -1) {
-      const option = this.questions[index].options.find(o => o._id === optionId);
-      if (option) {
-        this.questions[index].answer = option.isCorrect;
-      }
-    }
+    this.answers[questionId] = optionId;
   }
 
   submitExam() {
-    let score = 0;
-    for (const q of this.questions) {
-      if (q.answer) {
-        score++;
-      }
+    if (!this.examId) return;
+
+    if (this.timer) {
+      clearInterval(this.timer);
     }
-    this.score = score;
-    this.showScoreModal = true;
+
+    const token = localStorage.getItem('token') || '';
+    this.examService.submitExam(this.examId, this.answers, token).subscribe({
+      next: (result) => {
+        this.score = result.score;
+        this.total = result.total;
+        this.percentage = parseFloat(result.percentage);
+        this.showScoreModal = true;
+      },
+      error: (err) => {
+        console.error('Failed to submit exam:', err);
+        alert('Failed to submit exam. Please try again.');
+      }
+    });
   }
 
   closeScoreModal() {
     this.showScoreModal = false;
-    this.score = 0;
+    this.router.navigate(['/student/dashboard']);
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
   }
 }
