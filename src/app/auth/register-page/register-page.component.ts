@@ -16,27 +16,26 @@ export class RegisterPageComponent implements OnInit{
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private authService: AuthService ){}
 
   registerErrorMessage: string = '';
+  id: any;
+  registerForm!: FormGroup;
 
   ngOnInit() :void{
     this.activatedRoute.paramMap.subscribe({
       next:(params)=>{
-        this.getUsername.setValue('');
-        this.getEmail.setValue('');
-        this.getPassword.setValue('');
-        this.getRole.setValue('student');
+        this.id = params.get('id');  
+        const role = this.id === '0' ? 'admin' : 'student';
+
+        this.registerForm= new FormGroup({
+          username: new FormControl('',  [Validators.required, Validators.minLength(8)]),
+          email: new FormControl('',  [Validators.required, Validators.email]),
+          password:new FormControl('',  [Validators.required]),
+          role: new FormControl(role, Validators.required)
+      
+        })       
       }
     })
   }
 
-  registerForm= new FormGroup({
-    username: new FormControl('',  [Validators.required, Validators.minLength(8)]),
-    email: new FormControl('',  [
-      Validators.required,
-      Validators.pattern(/^[a-zA-Z]{3,8}(@)(gmail|yahoo)(.com)$/)
-    ]),
-    password:new FormControl('',  [Validators.required, Validators.minLength(6)]),
-    role:new FormControl('student'),
-  })
   
   get getUsername(){
     return this.registerForm.controls['username'];
@@ -56,7 +55,16 @@ export class RegisterPageComponent implements OnInit{
     if(this.registerForm.status === 'VALID'){
       this.authService.register(this.registerForm.value).subscribe({
         next: ()=>{
-          this.router.navigate(['/login']);
+          switch (this.id) {
+            case '0':
+              this.router.navigate(['/login',0]);
+              break;
+            case '1':
+              this.router.navigate(['/login',1]);
+              break;
+            default:
+              this.registerErrorMessage = 'Unknown role selected.';
+          }        
         },
         error: (err) => {
           console.error('Registration failed', err)

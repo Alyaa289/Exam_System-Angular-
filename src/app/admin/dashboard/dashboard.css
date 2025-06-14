@@ -7,7 +7,10 @@ body {
   }
 
   h2 {
-    color: #5a67d8;
+    color: #2d3748;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 2.5rem;
   }
 
   .dashboard-container {
@@ -83,14 +86,14 @@ body {
   }
 
   .action-link:hover{
-    background-color: #667eea;
+    background-color: #8b75c9;
     color: white;
   }
  
-  /* .primary-action{
-    background-color: #667eea;
+  .primary-action{
+    background-color: #8b75c9;
     color: white;
-  } */
+  }
 
   
   .recent-activity-list {
@@ -231,11 +234,12 @@ body {
 
   .btn-outline {
     background: transparent;
-    color: #667eea;
-    border: 2px solid #667eea;
-    padding: 0.75rem 1.5rem;
+    color: #8b75c9;
+    border: 2px solid #8b75c9;
+    margin-left: 0.5rem;
+    /* padding: 0.75rem 1.5rem;
     border-radius: 8px;
-    font-weight: 600;
+    font-weight: 600; */
     text-decoration: none;
     transition: all 0.3s ease;
     display: inline-flex;
@@ -244,8 +248,9 @@ body {
   }
 
   .btn-outline:hover {
-    background: #667eea;
+    background: #8b75c9;
     color: white;
     text-decoration: none;
     transform: translateY(-1px);
   }
+

@@ -24,6 +24,6 @@ export class HeaderComponent {
 
   isHiddenPage(): boolean {
     const url = this.router.url;
-    return url.startsWith('/login') || url === '/register';
+    return url.startsWith('/login') || url.startsWith('/register');
   }
 }

@@ -63,9 +63,9 @@
           <td>{{ exam.questions?.length || 0 }}</td>
           <td>{{ exam.duration || 0 }} mins</td>
           <td>
-            <a [routerLink]="['/admin/exams', exam._id || exam.id, 'edit']" class="btn btn-sm btn-primary me-2">Edit</a>
+            <a [routerLink]="['/admin/exams', exam._id || exam.id, 'edit']" class="btn btn-sm " style="background: #667eea; color: white;">Edit</a>
             <a [routerLink]="['/admin/question-form', exam._id || exam.id]"
-              class="btn btn-sm btn-success me-2">Questions</a>
+              class="btn btn-sm btn-outline  me-2">Questions</a>
             <button (click)="deleteExam(exam._id || exam.id || '')" class="btn btn-sm btn-danger">Delete</button>
           </td>
         </tr>
